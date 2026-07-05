@@ -95,5 +95,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
 # 文档化 docker-compose exec 命令需显式使用 -u dsa，避免手动进程写入 root-owned 文件。
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-# 默认命令（可被覆盖）
-CMD ["python", "main.py", "--schedule"]
+# 默认命令（可被覆盖）：--schedule 启用定时任务，--serve 启动 FastAPI Web 服务
+CMD ["python", "main.py", "--schedule", "--serve"]
