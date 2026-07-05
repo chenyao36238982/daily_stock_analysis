@@ -10,7 +10,7 @@ FROM node:20-slim AS web-builder
 WORKDIR /app/apps/dsa-web
 
 COPY apps/dsa-web/package.json apps/dsa-web/package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci
+RUN --mount=type=cache,id=npm-cache,target=/root/.npm npm ci
 
 COPY apps/dsa-web/ ./
 RUN npm run build
@@ -46,7 +46,7 @@ RUN groupadd -g 1000 dsa && \
 COPY requirements.txt .
 
 # 安装 Python 依赖
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
+RUN --mount=type=cache,id=pip-cache,target=/root/.cache/pip pip install -r requirements.txt
 
 # 复制应用代码
 COPY *.py ./
@@ -85,8 +85,8 @@ ENV API_PORT=8000
 # 暴露 API 端口
 EXPOSE 8000
 
-# 数据卷（持久化数据）
-VOLUME ["/app/data", "/app/logs", "/app/reports"]
+# 数据卷（持久化数据）- Railway 不支持 Dockerfile VOLUME，请在 Railway 中配置 Persistent Volumes
+# VOLUME ["/app/data", "/app/logs", "/app/reports"]
 
 # 健康检查（FastAPI 模式）
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
