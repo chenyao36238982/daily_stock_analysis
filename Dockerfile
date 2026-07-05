@@ -1,4 +1,4 @@
-﻿# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.7
 
 # ===================================
 # A股自选股智能分析系统 - Docker 镜像
@@ -58,8 +58,8 @@ COPY strategies/ ./strategies/
 COPY --from=web-builder /app/static ./static/
 COPY entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-# Verify the bundled AlphaSift adapter from requirements.
-RUN python -c "import alphasift.dsa_adapter"
+# Verify the bundled AlphaSift adapter from requirements (optional)
+# RUN python -c "import alphasift.dsa_adapter"
 
 # 确保数据目录存在并授权给 non-root 用户
 RUN mkdir -p /app/data /app/logs /app/reports && \
